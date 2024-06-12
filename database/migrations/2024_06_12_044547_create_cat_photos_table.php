@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('cat_photos', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->integer("phone");
-            $table->text("address");
+            $table->text("image");
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('cat_photos');
     }
 };

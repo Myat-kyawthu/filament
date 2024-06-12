@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CustomerResource\Pages;
-use App\Filament\Resources\CustomerResource\RelationManagers;
-use App\Models\Customer;
+use App\Filament\Resources\CatPhotoResource\Pages;
+use App\Filament\Resources\CatPhotoResource\RelationManagers;
+use App\Models\cat_photo;
+use App\Models\CatPhoto;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CustomerResource extends Resource
+class CatPhotoResource extends Resource
 {
-    protected static ?string $model = Customer::class;
+    protected static ?string $model = cat_photo::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,7 +24,12 @@ class CustomerResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\FileUpload::make("image")
+                ->image()
+                ->imageEditorAspectRatios([
+                    '1:1',
+                ])
+                
             ]);
     }
 
@@ -31,19 +37,13 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\ImageColumn::make('image')
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -63,9 +63,10 @@ class CustomerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCustomers::route('/'),
-            'create' => Pages\CreateCustomer::route('/create'),
-            'edit' => Pages\EditCustomer::route('/{record}/edit'),
+            'index' => Pages\ListCatPhotos::route('/'),
+            'create' => Pages\CreateCatPhoto::route('/create'),
+            'view' => Pages\ViewCatPhoto::route('/{record}'),
+            'edit' => Pages\EditCatPhoto::route('/{record}/edit'),
         ];
     }
 }

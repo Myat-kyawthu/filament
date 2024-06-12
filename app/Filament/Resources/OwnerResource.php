@@ -17,7 +17,7 @@ class OwnerResource extends Resource
 {
     protected static ?string $model = Owner::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
     {
@@ -34,6 +34,7 @@ class OwnerResource extends Resource
                     ->tel()
                     ->required()
                     ->maxLength(255),
+           
             ]);
     }
 
@@ -54,6 +55,7 @@ class OwnerResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                
             ])
             ->filters([
                 //
