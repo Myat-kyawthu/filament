@@ -18,6 +18,8 @@ class OwnerResource extends Resource
     protected static ?string $model = Owner::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $navigationGroup = "Owner Management";
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

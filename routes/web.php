@@ -1,20 +1,27 @@
 <?php
-
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+Route::post('/login', function(Request $request) {
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-Route::get('/', function () {
-    return view('welcome');
+    if ($validator->fails()) {
+        return response(['msg' => $validator->errors()->first()], 400);
+    }
+
+    $email = $request->email;
+    $password = $request->password;
+
+    $user = User::where('email', $email)->first();
+    if ($user && password_verify($password, $user->password)) {
+        return $user->createToken('api')->plainTextToken;
+    }
+
+    return response(['msg' => 'Email or password incorrect'], 401);
 });
-Route::get("/login" , [Controller::class , "login"]);
